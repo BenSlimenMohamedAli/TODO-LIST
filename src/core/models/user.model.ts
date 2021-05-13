@@ -25,6 +25,10 @@ export class User {
   @Prop()
   password: string;
 
+  @Field(() => String, { nullable: true })
+  @Prop()
+  role: string;
+
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Prop()
   createdAt: Date;

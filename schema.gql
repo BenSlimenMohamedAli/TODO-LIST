@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  password: String!
+  role: String!
+  username: String
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -20,10 +28,23 @@ type LoginOutput {
 
 type Mutation {
   login(credentials: LoginInput!): LoginOutput!
+  user_create(user: CreateUserInput!): User!
+}
+
+input paginationInput {
+  page: Float!
+  size: Float!
+}
+
+type paginationOutput {
+  page: Float!
+  size: Float!
+  total: Float!
+  totalPages: Float!
 }
 
 type Query {
-  user_list: String!
+  user_list(filters: UserFilters, pagination: paginationInput!): UserListOutput!
 }
 
 type User {
@@ -32,6 +53,19 @@ type User {
   firstName: String
   lastName: String
   password: String
+  role: String
   updatedAt: DateTime
   username: String
+}
+
+input UserFilters {
+  firstName: String
+  lastName: String
+  role: String
+  username: String
+}
+
+type UserListOutput {
+  list: [User!]!
+  pagination: paginationOutput!
 }
