@@ -7,6 +7,7 @@ import { join } from 'path';
 import { AuthModule } from './app/auth/auth.module';
 import { env, loadEnv } from '@env';
 import { UserModule } from './app/user/user.module';
+import { TaskModule } from './app/task/task.module';
 loadEnv();
 
 const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env.MONGO_AUTH_DB}`;
@@ -27,6 +28,7 @@ const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env
     }),
     AuthModule,
     UserModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
