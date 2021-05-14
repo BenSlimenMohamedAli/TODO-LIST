@@ -2,14 +2,7 @@ import { JwtAuthGuard } from '@core/guards/auth.guard';
 import { User } from '@core/models/user.model';
 import { paginationInput } from '@core/utils/pagination/pagination.input';
 import { UseGuards } from '@nestjs/common';
-import {
-  Args,
-  Context,
-  GraphQLExecutionContext,
-  Mutation,
-  Query,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput, UserFilters } from './user.inputs';
 import { UserListOutput } from './user.outputs';
 import { UserService } from './user.service';

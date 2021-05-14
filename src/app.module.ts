@@ -24,7 +24,7 @@ const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env
       sortSchema: true,
       playground: {
         settings: {
-          'editor.theme': 'light',
+          'editor.theme': 'dark',
           'request.credentials': 'same-origin',
         },
       },

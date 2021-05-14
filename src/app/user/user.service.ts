@@ -3,13 +3,18 @@ import { setupPaginationOutput } from '@core/utils/pagination/pagination.functio
 import { paginationInput } from '@core/utils/pagination/pagination.input';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateUserInput, UserFilters } from './user.inputs';
 import { UserListOutput } from './user.outputs';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  findById(_id: Types.ObjectId) {
+    return this.userModel.findById(_id).exec();
+  }
+
   async list(
     pagination: paginationInput,
     filters: UserFilters,

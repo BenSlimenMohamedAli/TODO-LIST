@@ -5,11 +5,15 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthenticationError } from 'apollo-server-express';
 import * as jwt from 'jsonwebtoken';
 import { env, loadEnv } from '@env';
+import { UserService } from 'src/app/user/user.service';
 loadEnv();
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  public constructor(private readonly reflector: Reflector) {
+  public constructor(
+    private readonly reflector: Reflector,
+    private usersService: UserService,
+  ) {
     super();
   }
 
@@ -20,13 +24,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const cookies = context.getArgByIndex(2).req.cookies;
+    let wrongCredentials = false;
     if (cookies.authorization) {
       const decoded: any = jwt.verify(
         cookies.authorization.replace('Bearer ', ''),
         env.JWT_SECRET,
       );
       if (decoded._id !== cookies.userId) {
-        throw new AuthenticationError('WRONGCREDENTIALS');
+        wrongCredentials = true;
       }
     }
     const isPublic = this.reflector.get<boolean>(
@@ -37,6 +42,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (isPublic) {
       return true;
     }
+
+    const user = await this.usersService.findById(cookies.userId);
+    if (!user) wrongCredentials = true;
+
+    if (wrongCredentials) throw new AuthenticationError('WRONGCREDENTIALS');
 
     // Make sure to check the authorization, for now, just return false to have a difference between public routes.
     try {
