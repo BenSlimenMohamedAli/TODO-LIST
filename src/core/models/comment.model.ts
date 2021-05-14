@@ -4,25 +4,14 @@ import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Schema()
-export class Task {
-  @Field(() => String, { nullable: true })
-  _id: Types.ObjectId;
-
+export class Comment {
   @Field(() => String, { nullable: true })
   @Prop()
   title: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
-  description: string;
-
-  @Field(() => Boolean, { nullable: true })
-  @Prop()
-  completed: boolean;
-
-  @Field(() => [String], { nullable: true })
-  @Prop()
-  sharedWith: Types.ObjectId[];
+  content: string;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Prop()
@@ -33,19 +22,19 @@ export class Task {
   updatedAt: Date;
 }
 
-export type TaskDocument = Task & Document;
+export type CommentDocument = Comment & Document;
 
-const TSchema = SchemaFactory.createForClass(Task);
+const CSchema = SchemaFactory.createForClass(Comment);
 
-TSchema.pre<TaskDocument>('save', function (next) {
+CSchema.pre<CommentDocument>('save', function (next) {
   this.createdAt = new Date();
   this.updatedAt = new Date();
   next();
 });
 
-TSchema.pre<TaskDocument>('updateOne', function (next) {
+CSchema.pre<CommentDocument>('updateOne', function (next) {
   this.update({ updatedAt: new Date() });
   next();
 });
 
-export const TaskSchema = TSchema;
+export const CommentSchema = CSchema;
