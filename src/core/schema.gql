@@ -26,9 +26,9 @@ input LoginInput {
 }
 
 type LoginOutput {
-  _id: String!
   authorization: String!
   profile: User!
+  userId: String!
 }
 
 type Mutation {

@@ -19,13 +19,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const headers = context.getArgByIndex(2).req.headers;
-    if (headers.authorization) {
+    const cookies = context.getArgByIndex(2).req.cookies;
+    if (cookies.authorization) {
       const decoded: any = jwt.verify(
-        headers.authorization.replace('Bearer ', ''),
+        cookies.authorization.replace('Bearer ', ''),
         env.JWT_SECRET,
       );
-      if (decoded._id !== headers.userid) {
+      if (decoded._id !== cookies.userId) {
         throw new AuthenticationError('WRONGCREDENTIALS');
       }
     }

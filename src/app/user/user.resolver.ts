@@ -1,6 +1,15 @@
+import { JwtAuthGuard } from '@core/guards/auth.guard';
 import { User } from '@core/models/user.model';
 import { paginationInput } from '@core/utils/pagination/pagination.input';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import {
+  Args,
+  Context,
+  GraphQLExecutionContext,
+  Mutation,
+  Query,
+  Resolver,
+} from '@nestjs/graphql';
 import { CreateUserInput, UserFilters } from './user.inputs';
 import { UserListOutput } from './user.outputs';
 import { UserService } from './user.service';
@@ -9,6 +18,7 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private usersService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => UserListOutput)
   async user_list(
     @Args('pagination') pagination: paginationInput,

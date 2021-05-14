@@ -7,7 +7,7 @@ export class LoginOutput {
   authorization: string;
 
   @Field(() => String)
-  _id: string;
+  userId: string;
 
   @Field(() => User)
   profile: User;

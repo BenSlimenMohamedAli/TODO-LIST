@@ -22,9 +22,18 @@ const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env
       autoSchemaFile: join(process.cwd(), './src/core/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
       sortSchema: true,
-      playground: process.env.NODE_ENV === 'dev',
-      debug: false,
+      playground: {
+        settings: {
+          'editor.theme': 'light',
+          'request.credentials': 'same-origin',
+        },
+      },
+      debug: process.env.NODE_ENV === 'dev',
       uploads: true,
+      cors: {
+        credentials: true,
+        origin: true,
+      },
     }),
     AuthModule,
     UserModule,
