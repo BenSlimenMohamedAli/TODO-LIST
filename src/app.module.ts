@@ -19,7 +19,7 @@ const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env
       useCreateIndex: true,
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), './schema.gql'),
+      autoSchemaFile: join(process.cwd(), './src/core/schema.gql'),
       context: ({ req, res }) => ({ req, res }),
       sortSchema: true,
       playground: process.env.NODE_ENV === 'dev',

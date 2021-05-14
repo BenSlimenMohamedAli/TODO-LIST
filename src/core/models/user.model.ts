@@ -21,7 +21,6 @@ export class User {
   @Prop({ unique: true })
   username: string;
 
-  @Field(() => String, { nullable: true })
   @Prop()
   password: string;
 
