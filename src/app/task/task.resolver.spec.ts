@@ -1,4 +1,7 @@
+import { DatabaseModule } from '@core/database.module';
+import { GraphqlModule } from '@core/graphql.module';
 import { Test, TestingModule } from '@nestjs/testing';
+import { TaskModule } from './task.module';
 import { TaskResolver } from './task.resolver';
 
 describe('TaskResolver', () => {
@@ -6,7 +9,7 @@ describe('TaskResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TaskResolver],
+      imports: [DatabaseModule, GraphqlModule, TaskModule],
     }).compile();
 
     resolver = module.get<TaskResolver>(TaskResolver);

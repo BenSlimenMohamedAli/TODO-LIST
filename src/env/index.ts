@@ -14,6 +14,12 @@ export const schema = {
   MONGO_HOST: String,
   MONGO_DB: String,
   MONGO_HAS_PASSWORD: Boolean,
+  // admin account
+  ADMIN_FIRSTNAME: String,
+  ADMIN_LASTNAME: String,
+  ADMIN_USERNAME: String,
+  ADMIN_PASSWORD: String,
+  ADMIN_ROLE: String,
 };
 
 export let env: Env;

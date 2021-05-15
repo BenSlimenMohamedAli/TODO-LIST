@@ -1,18 +1,18 @@
 import { DatabaseModule } from '@core/database.module';
 import { GraphqlModule } from '@core/graphql.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserModule } from './user.module';
-import { UserResolver } from './user.resolver';
+import { CommentModule } from './comment.module';
+import { CommentResolver } from './comment.resolver';
 
-describe('UserResolver', () => {
-  let resolver: UserResolver;
+describe('CommentResolver', () => {
+  let resolver: CommentResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DatabaseModule, GraphqlModule, UserModule],
+      imports: [DatabaseModule, GraphqlModule, CommentModule],
     }).compile();
 
-    resolver = module.get<UserResolver>(UserResolver);
+    resolver = module.get<CommentResolver>(CommentResolver);
   });
 
   it('should be defined', () => {

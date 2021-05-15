@@ -1,43 +1,21 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
-import { MongooseModule } from '@nestjs/mongoose';
-import { join } from 'path';
 import { AuthModule } from './app/auth/auth.module';
-import { env, loadEnv } from '@env';
 import { UserModule } from './app/user/user.module';
 import { TaskModule } from './app/task/task.module';
-loadEnv();
-
-const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env.MONGO_AUTH_DB}`;
+import { CommentModule } from './app/comment/comment.module';
+import { GraphqlModule } from './core/graphql.module';
+import { DatabaseModule } from '@core/database.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(MONGO_LINK, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-    }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), './src/core/schema.gql'),
-      context: ({ req, res }) => ({ req, res }),
-      sortSchema: true,
-      playground: {
-        settings: {
-          'editor.theme': 'dark',
-          'request.credentials': 'same-origin',
-        },
-      },
-      debug: process.env.NODE_ENV === 'dev',
-      uploads: true,
-      cors: {
-        credentials: true,
-        origin: true,
-      },
-    }),
+    DatabaseModule,
+    GraphqlModule,
     AuthModule,
     UserModule,
     TaskModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

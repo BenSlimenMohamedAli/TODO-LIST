@@ -41,6 +41,17 @@ export class AuthResolver {
         userId: user._id,
         profile: user,
       };
-    } else throw new AuthenticationError('Email or password is Invalid');
+    } else {
+      context['res'].clearCookie('authorization');
+      context['res'].clearCookie('userId');
+      throw new AuthenticationError('Email or password is Invalid');
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Context() context: GraphQLExecutionContext) {
+    context['res'].clearCookie('authorization');
+    context['res'].clearCookie('userId');
+    return true;
   }
 }

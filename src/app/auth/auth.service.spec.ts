@@ -1,12 +1,15 @@
+import { DatabaseModule } from '@core/database.module';
+import { GraphqlModule } from '@core/graphql.module';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AuthModule } from './auth.module';
 import { AuthService } from './auth.service';
 
-describe('UserService', () => {
+describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      imports: [DatabaseModule, GraphqlModule, AuthModule],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

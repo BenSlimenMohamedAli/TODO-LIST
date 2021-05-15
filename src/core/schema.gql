@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  _id: String
+  content: String
+  createdAt: DateTime
+  task(populate: Boolean!): Task
+  updatedAt: DateTime
+  user(populate: Boolean!): User
+}
+
+input CreateCommentInput {
+  content: String!
+  task: String!
+}
+
 input CreateTaskInput {
   description: String
   title: String!
@@ -32,10 +46,20 @@ type LoginOutput {
 }
 
 type Mutation {
+  comment_create(comment: CreateCommentInput!): Comment!
+  comment_delete(_id: String!): Boolean!
+  comment_update(comment: UpdateCommentInput!): Boolean!
   login(credentials: LoginInput!): LoginOutput!
+  logout: Boolean!
   task_create(task: CreateTaskInput!): Task!
   task_delete(_id: String!): Boolean!
+  task_share(taskId: String!, userId: String!): Boolean!
+  task_unlink(taskId: String!, userId: String!): Boolean!
+  task_update(task: UpdateTaskInput!): Boolean!
   user_create(user: CreateUserInput!): User!
+  user_delete(_id: String!): Boolean!
+  user_password_update(_id: String!, passwords: UpdatePasswordInput!): Boolean!
+  user_update(user: UpdateUserInput!): Boolean!
 }
 
 input paginationInput {
@@ -51,6 +75,11 @@ type paginationOutput {
 }
 
 type Query {
+  comment(_id: String!): Comment!
+  comment_list(taskId: String!): [Comment!]!
+  task(_id: String!): Task!
+  task_list(filters: TaskFilters, pagination: paginationInput!): TaskListOutput!
+  user(_id: String!): User!
   user_list(filters: UserFilters, pagination: paginationInput!): UserListOutput!
 }
 
@@ -59,9 +88,44 @@ type Task {
   completed: Boolean
   createdAt: DateTime
   description: String
-  sharedWith: [String!]
+  owner(populate: Boolean!): User
+  sharedWith(populate: Boolean!): [User!]
   title: String
   updatedAt: DateTime
+}
+
+input TaskFilters {
+  completed: Boolean
+  description: String
+  owner: String
+  title: String
+}
+
+type TaskListOutput {
+  list: [Task!]!
+  pagination: paginationOutput!
+}
+
+input UpdateCommentInput {
+  _id: String!
+  content: String!
+}
+
+input UpdatePasswordInput {
+  newPassword: String!
+}
+
+input UpdateTaskInput {
+  _id: String!
+  completed: Boolean
+  description: String
+  title: String
+}
+
+input UpdateUserInput {
+  _id: String!
+  firstName: String
+  lastName: String
 }
 
 type User {

@@ -2,18 +2,14 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, ForbiddenError } from 'apollo-server-express';
 import * as jwt from 'jsonwebtoken';
 import { env, loadEnv } from '@env';
-import { UserService } from 'src/app/user/user.service';
 loadEnv();
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  public constructor(
-    private readonly reflector: Reflector,
-    private usersService: UserService,
-  ) {
+  public constructor(private readonly reflector: Reflector) {
     super();
   }
 
@@ -23,28 +19,26 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const cookies = context.getArgByIndex(2).req.cookies;
+    const cookies = this.getRequest(context).cookies;
+    let decoded: any = null;
+    const { authorization, userId } = cookies as any;
     let wrongCredentials = false;
-    if (cookies.authorization) {
-      const decoded: any = jwt.verify(
-        cookies.authorization.replace('Bearer ', ''),
+    if (authorization && authorization.length) {
+      decoded = jwt.verify(
+        authorization.replace('Bearer ', ''),
         env.JWT_SECRET,
       );
-      if (decoded._id !== cookies.userId) {
+      if (decoded._id !== userId) {
         wrongCredentials = true;
       }
-    }
-    const isPublic = this.reflector.get<boolean>(
-      'isPublic',
-      context.getHandler(),
-    );
-
-    if (isPublic) {
-      return true;
+    } else {
+      throw new AuthenticationError('WRONGCREDENTIALS');
     }
 
-    const user = await this.usersService.findById(cookies.userId);
-    if (!user) wrongCredentials = true;
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    if (roles && !roles.includes(decoded.role)) {
+      throw new ForbiddenError('WRONGACCESS');
+    }
 
     if (wrongCredentials) throw new AuthenticationError('WRONGCREDENTIALS');
 

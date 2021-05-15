@@ -1,6 +1,8 @@
 import { adminRoles } from '@core/static/adminRoles';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsIn, Matches, MinLength } from 'class-validator';
+import { env, loadEnv } from '@env';
+loadEnv();
 
 @InputType()
 export class UserFilters {
@@ -39,4 +41,26 @@ export class CreateUserInput {
     message: 'password too weak',
   })
   password: string;
+}
+
+@InputType()
+export class UpdatePasswordInput {
+  @Field(() => String)
+  @MinLength(8)
+  @Matches(new RegExp(env.PASSWORD_REGEX), {
+    message: 'password too weak',
+  })
+  newPassword: string;
+}
+
+@InputType()
+export class UpdateUserInput {
+  @Field(() => String)
+  _id: string;
+
+  @Field(() => String, { nullable: true })
+  firstName: string;
+
+  @Field(() => String, { nullable: true })
+  lastName: string;
 }

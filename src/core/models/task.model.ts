@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import { User } from './user.model';
+import { Comment } from './comment.model';
 
 @ObjectType()
 @Schema()
@@ -20,8 +22,12 @@ export class Task {
   @Prop()
   completed: boolean;
 
-  @Field(() => [String], { nullable: true })
-  @Prop()
+  @Field(() => User, { nullable: true })
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  owner: Types.ObjectId;
+
+  @Field(() => [User], { nullable: true })
+  @Prop({ type: Types.ObjectId, ref: User.name })
   sharedWith: Types.ObjectId[];
 
   @Field(() => GraphQLISODateTime, { nullable: true })

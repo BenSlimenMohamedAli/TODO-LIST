@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
-import { TaskService } from './task.service';
-import { TaskResolver } from './task.resolver';
+import { CommentService } from './comment.service';
+import { CommentResolver } from './comment.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CommentSchema, Comment } from '@core/models/comment.model';
 import { Task, TaskSchema } from '@core/models/task.model';
-import { UserService } from '../user/user.service';
 import { User, UserSchema } from '@core/models/user.model';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
+      { name: Comment.name, schema: CommentSchema },
       { name: Task.name, schema: TaskSchema },
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  providers: [TaskResolver, TaskService, UserService],
+  providers: [CommentService, CommentResolver],
 })
-export class TaskModule {}
+export class CommentModule {}

@@ -4,12 +4,27 @@ import { paginationInput } from '@core/utils/pagination/pagination.input';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { CreateUserInput, UserFilters } from './user.inputs';
+import { CreateUserInput, UpdateUserInput, UserFilters } from './user.inputs';
 import { UserListOutput } from './user.outputs';
+import { env, loadEnv } from '@env';
+import { hashSync } from 'bcrypt';
+loadEnv();
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
+    this.userModel.find({ role: 'admin' }).then((admins) => {
+      if (!admins.length) {
+        this.create({
+          firstName: env.ADMIN_FIRSTNAME,
+          lastName: env.ADMIN_LASTNAME,
+          username: env.ADMIN_USERNAME,
+          password: env.ADMIN_PASSWORD,
+          role: env.ADMIN_ROLE,
+        });
+      }
+    });
+  }
 
   findById(_id: Types.ObjectId) {
     return this.userModel.findById(_id).exec();
@@ -54,6 +69,18 @@ export class UserService {
     return output;
   }
 
+  update(user: UpdateUserInput) {
+    return this.userModel
+      .updateOne({ _id: user._id }, user)
+      .exec()
+      .then((updated) => {
+        return updated.nModified ? true : false;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+
   countByUsername(username: string) {
     return this.userModel.countDocuments(
       { username: { $regex: '^' + username } },
@@ -61,5 +88,22 @@ export class UserService {
         return count;
       },
     );
+  }
+
+  delete(_id: Types.ObjectId) {
+    return this.userModel
+      .findByIdAndDelete(_id)
+      .exec()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  async updatePassword(id, newPassword) {
+    newPassword = hashSync(newPassword, 10);
+    const success = await this.userModel
+      .updateOne({ _id: id }, { password: newPassword })
+      .exec();
+    if (success.ok && success.nModified) return true;
+    return false;
   }
 }

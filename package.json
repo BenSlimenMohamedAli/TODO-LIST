@@ -93,6 +93,7 @@
       "json",
       "ts"
     ],
+    "timers": "fake",
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TaskService } from './task.service';
-import { TaskModule } from './task.module';
+import { CommentService } from './comment.service';
+import { CommentModule } from './comment.module';
 import { DatabaseModule } from '@core/database.module';
 import { GraphqlModule } from '@core/graphql.module';
 
-describe('TaskService', () => {
-  let service: TaskService;
+describe('CommentService', () => {
+  let service: CommentService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DatabaseModule, GraphqlModule, TaskModule],
+      imports: [DatabaseModule, GraphqlModule, CommentModule],
     }).compile();
 
-    service = module.get<TaskService>(TaskService);
+    service = module.get<CommentService>(CommentService);
   });
 
   it('should be defined', () => {

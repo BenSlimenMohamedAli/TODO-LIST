@@ -1,17 +1,26 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import { Task } from './task.model';
+import { User } from './user.model';
 
 @ObjectType()
 @Schema()
 export class Comment {
   @Field(() => String, { nullable: true })
-  @Prop()
-  title: string;
+  _id: Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   @Prop()
   content: string;
+
+  @Field(() => User, { nullable: true })
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  user: Types.ObjectId;
+
+  @Field(() => Task, { nullable: true })
+  @Prop({ type: Types.ObjectId, ref: Task?.name })
+  task: Types.ObjectId;
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   @Prop()
