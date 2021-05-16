@@ -21,6 +21,8 @@ export class UserService {
           username: env.ADMIN_USERNAME,
           password: env.ADMIN_PASSWORD,
           role: env.ADMIN_ROLE,
+        }).catch(() => {
+          /***/
         });
       }
     });
@@ -98,12 +100,25 @@ export class UserService {
       .catch(() => false);
   }
 
-  async updatePassword(id, newPassword) {
-    newPassword = hashSync(newPassword, 10);
-    const success = await this.userModel
-      .updateOne({ _id: id }, { password: newPassword })
-      .exec();
-    if (success.ok && success.nModified) return true;
+  async updatePassword(id, oldPassword, newPassword) {
+    const user: any = await this.userModel.findOne({ _id: id }).exec();
+    const isPasswordMatch = user.comparePassword(
+      { user, password: oldPassword },
+      (error, isMatch) => {
+        if (isMatch) {
+          return true;
+        }
+        return false;
+      },
+    );
+    if (isPasswordMatch) {
+      newPassword = hashSync(newPassword, 10);
+      const success = await this.userModel
+        .updateOne({ _id: id }, { password: newPassword })
+        .exec();
+      if (success.ok && success.nModified) return true;
+    }
+
     return false;
   }
 }

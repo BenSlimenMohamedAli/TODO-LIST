@@ -9,7 +9,10 @@ const MONGO_LINK = `mongodb://${env.MONGO_HOST}/${env.MONGO_DB}?authSource=${env
   imports: [
     MongooseModule.forRoot(MONGO_LINK, {
       useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
       useCreateIndex: true,
+      autoIndex: true,
     }),
   ],
 })

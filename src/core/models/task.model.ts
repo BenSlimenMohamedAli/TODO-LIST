@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 import { User } from './user.model';
-import { Comment } from './comment.model';
 
 @ObjectType()
 @Schema()

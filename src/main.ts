@@ -7,9 +7,8 @@ import { ValidationFilter } from '@core/errors/validation.filter';
 import * as cookieParser from 'cookie-parser';
 import { loadEnv, env } from '@env';
 
-async function bootstrap() {
+export async function bootstrap(app) {
   await loadEnv();
-  const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.useGlobalFilters(new ValidationFilter(), new MongooseExceptionFilter());
   app.useGlobalPipes(
@@ -32,6 +31,12 @@ async function bootstrap() {
     credentials: false,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
+}
+
+async function start() {
+  const app = await NestFactory.create(AppModule);
+  bootstrap(app);
   await app.listen(env.PORT);
 }
-bootstrap();
+
+start();

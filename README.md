@@ -99,7 +99,7 @@ This is a nodeJs project, if you will run the project in development mode or exe
   or
 
   ```sh
-  npm run test:watch
+  npm run test:e2e
   ```
 
 - production mode
@@ -119,7 +119,7 @@ If you don't have Insomnia installed in your computer please refer to this link 
 
 The api authentication is managed by cookies, you don't need to write any tokens in your requests.
 
-The Insomnia collection is a full example of the project you can use it to simulate the scenarios that you need to understand.
+The Insomnia collection is a full example of the project, you can use it to simulate the scenarios that you need to understand.
 
 The following image is taken during the API testing in Insomnia :
 

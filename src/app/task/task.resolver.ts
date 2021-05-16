@@ -121,11 +121,4 @@ export class TaskResolver {
 
     return task.sharedWith;
   }
-
-  // @ResolveField()
-  // async comments(@Parent() task: TaskDocument) {
-  //   const comments = await this.taskService.getComments(task._id);
-
-  //   return comments;
-  // }
 }

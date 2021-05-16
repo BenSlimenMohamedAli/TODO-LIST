@@ -65,7 +65,6 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async user_password_update(
     @Context() context: GraphQLExecutionContext,
-    @Args('_id') _id: string,
     @Args('passwords') passwords: UpdatePasswordInput,
   ) {
     const {
@@ -73,8 +72,11 @@ export class UserResolver {
         cookies: { userId },
       },
     } = context as any;
-    if (_id !== userId) return false;
-    return this.usersService.updatePassword(_id, passwords.newPassword);
+    return this.usersService.updatePassword(
+      userId,
+      passwords.oldPassword,
+      passwords.newPassword,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

@@ -10,8 +10,8 @@ import { DatabaseModule } from '@core/database.module';
 
 @Module({
   imports: [
-    DatabaseModule,
     GraphqlModule,
+    DatabaseModule,
     AuthModule,
     UserModule,
     TaskModule,

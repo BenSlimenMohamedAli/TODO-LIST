@@ -19,9 +19,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const cookies = this.getRequest(context).cookies;
+    const cookies = this.getRequest(context)?.cookies;
     let decoded: any = null;
-    const { authorization, userId } = cookies as any;
+    const authorization = cookies?.authorization;
+    const userId = cookies?.userId;
+
+    if (!authorization || !userId)
+      throw new AuthenticationError('WRONGCREDENTIALS');
+
     let wrongCredentials = false;
     if (authorization && authorization.length) {
       decoded = jwt.verify(

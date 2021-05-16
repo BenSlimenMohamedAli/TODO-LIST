@@ -50,6 +50,13 @@ export class UpdatePasswordInput {
   @Matches(new RegExp(env.PASSWORD_REGEX), {
     message: 'password too weak',
   })
+  oldPassword: string;
+
+  @Field(() => String)
+  @MinLength(8)
+  @Matches(new RegExp(env.PASSWORD_REGEX), {
+    message: 'password too weak',
+  })
   newPassword: string;
 }
 

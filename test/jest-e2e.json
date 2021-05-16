@@ -9,5 +9,7 @@
   "moduleNameMapper": {
     "@core/(.*)": "<rootDir>/../src/core/$1",
     "@env": "<rootDir>/../src/env"
-  }
+  },
+  "collectCoverage": true,
+  "verbose": true
 }

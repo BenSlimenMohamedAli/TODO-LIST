@@ -28,7 +28,7 @@
     "@nestjs/core": "^7.5.1",
     "@nestjs/graphql": "^7.9.1",
     "@nestjs/jwt": "^7.2.0",
-    "@nestjs/mongoose": "^7.2.0",
+    "@nestjs/mongoose": "^7.2.4",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.5.1",
     "apollo-server-express": "^2.19.0",
@@ -46,7 +46,7 @@
     "graphql-upload": "^11.0.0",
     "mime-types": "^2.1.28",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.8",
+    "mongoose": "^5.12.9",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -79,6 +79,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "faker": "^5.5.3",
     "jest": "^26.6.3",
+    "jest-supertest-cookie-fix": "^1.0.0",
     "prettier": "^2.1.2",
     "supertest": "^6.0.0",
     "ts-jest": "^26.4.3",
@@ -107,6 +108,8 @@
     "moduleNameMapper": {
       "@core/(.*)": "<rootDir>/core/$1",
       "@env": "<rootDir>/env"
-    }
+    },
+    "collectCoverage": true,
+    "verbose": true
   }
 }
