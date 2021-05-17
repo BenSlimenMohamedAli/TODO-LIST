@@ -56,6 +56,7 @@ The project is made using several technologies:
 - [MongoDB](https://www.mongodb.com)
 - [GraphQL](https://graphql.org)
 - [TypeScript](https://www.typescriptlang.org)
+- [Jest](https://jestjs.io/)
 - [Docker](https://www.typescriptlang.org)
 - [Insomnia](https://insomnia.rest/download)
 
