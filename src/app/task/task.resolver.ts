@@ -13,6 +13,7 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+import { ForbiddenError } from 'apollo-server-express';
 import { Types } from 'mongoose';
 import { UserService } from '../user/user.service';
 import { CreateTaskInput, TaskFilters, UpdateTaskInput } from './task.inputs';
@@ -28,8 +29,28 @@ export class TaskResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => Task)
-  async task(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async task(
+    @Context() context: GraphQLExecutionContext,
+    @Args('_id', { type: () => String }) _id: Types.ObjectId,
+  ) {
+    const {
+      req: {
+        cookies: { userId },
+      },
+    } = context as any;
+
     const output: Task = await this.taskService.findById(_id);
+
+    let sharedWith;
+    if (output?.sharedWith)
+      sharedWith = JSON.parse(JSON.stringify(output?.sharedWith));
+
+    if (
+      userId.toString() !== output.owner.toString() &&
+      !sharedWith?.includes(userId)
+    )
+      throw new ForbiddenError('WRONGACCESS');
+
     return output;
   }
 
@@ -94,8 +115,16 @@ export class TaskResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean)
-  task_delete(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
-    return this.taskService.delete(_id);
+  task_delete(
+    @Context() context: GraphQLExecutionContext,
+    @Args('_id', { type: () => String }) _id: Types.ObjectId,
+  ) {
+    const {
+      req: {
+        cookies: { userId },
+      },
+    } = context as any;
+    return this.taskService.delete(_id, userId);
   }
 
   @ResolveField()

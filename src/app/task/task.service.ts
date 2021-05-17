@@ -4,6 +4,7 @@ import { setupPaginationOutput } from '@core/utils/pagination/pagination.functio
 import { paginationInput } from '@core/utils/pagination/pagination.input';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ForbiddenError } from 'apollo-server-express';
 import { Model, Types } from 'mongoose';
 import { CreateTaskInput, TaskFilters, UpdateTaskInput } from './task.inputs';
 import { TaskListOutput } from './task.outputs';
@@ -46,7 +47,11 @@ export class TaskService {
     return output;
   }
 
-  delete(_id: Types.ObjectId): Promise<boolean> {
+  async delete(_id: Types.ObjectId, userId: string): Promise<boolean> {
+    const task: Task = await this.taskModel.findOne({ _id });
+    if (task?.owner.toString() !== userId)
+      throw new ForbiddenError('WRONGACCESS');
+
     return this.taskModel
       .findByIdAndDelete(_id)
       .exec()

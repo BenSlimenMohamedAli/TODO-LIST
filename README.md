@@ -5,7 +5,7 @@
   <h3 align="center">TODO-LIST</h3>
 
   <p align="center">
-    NodeJs ( NestJs ), TypeScript, GraphQL and MongoDB todo list project
+    NodeJs ( NestJs based on Express ), TypeScript, GraphQL and MongoDB todo list project
     <br />
     <br />
     <br />
@@ -45,7 +45,7 @@ Here's why:
 
 - Your time should be focused on creating something amazing. A project that solves a problem and helps others
 - Using to-do lists increases your productivity
-- You should element Better principles to the rest of your life :smile
+- You should element Better principles to the rest of your life :smile:
 
 ### Built With
 
@@ -111,11 +111,11 @@ This is a nodeJs project, if you will run the project in development mode or exe
 
 ## Usage
 
-if you feel comfortable by using the graphql playground you can use it in development mode over the following url `http://localhost:3001/graphql`, Otherwise there is a folder in the project called Insomnia containing a json file that is an Insomnia collection, you can import it to your local Insomnia by going to `Application` -> `Preferences` -> `Data` -> `Import Data` -> `From File` and then select the file.
+if you feel comfortable by using the graphql playground you can use it in development mode over the following url `http://localhost:3001/graphql`, Otherwise there is a folder in the project called Insomnia containing a json file that is an Insomnia collection, you can import it to your local Insomnia by going to `Application` -> `Preferences` -> `Data` -> `Import Data` -> `From File` and then select the file, later select the environment: dev for dev mode and prod for production or docker.
 
 If you don't have Insomnia installed in your computer please refer to this link to install it : [Insomnia](https://insomnia.rest/download)
 
-### Introduction
+### Insomnia
 
 The api authentication is managed by cookies, you don't need to write any tokens in your requests.
 
@@ -124,6 +124,12 @@ The Insomnia collection is a full example of the project, you can use it to simu
 The following image is taken during the API testing in Insomnia :
 
 [![Insomnia Screen Shot][product-screenshot]]()
+
+### Run E2E Test to verify the built test scenario
+
+The following image is the result of the e2e test, run `npm run test:e2e` to get the same result :
+
+[![Insomnia Screen Shot][e2e]]()
 
 <!-- CONTACT -->
 
@@ -134,3 +140,4 @@ Ben Slimen Mohamed Ali - dslimen.15@gmail.com.com
 Project Link: [https://github.com/DaliSlimen/TODO-LIST](https://github.com/DaliSlimen/TODO-LIST)
 
 [product-screenshot]: screenshots/insomnia.png
+[e2e]: screenshots/e2e.png
